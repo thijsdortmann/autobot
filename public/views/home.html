@@ -1,0 +1,38 @@
+<div layout="row" layout-sm="column">
+  <md-content class="md-padding" flex="66" flex-sm="100">
+    <md-card>
+      <md-card-content>
+        <h2 class="md-title">Switcheable units</h2>
+        <md-list>
+          <md-list-item class="md-2-line" ng-repeat="unit in units">
+            <md-switch ng-model="unit.unitState" ng-change="changeState()" aria-label="Unit state">
+              <div class="md-list-item-text">
+                <h3>{{ unit.unitName }}</h3>
+                <p>{{ unit.unitDescr }}</p>
+              </div>
+            </md-switch>
+          </md-list-item>
+        </md-list>
+      </md-card-content>
+    </md-card>
+  </md-content>
+  <md-content class="md-padding" flex="33" flex-sm="100">
+    <md-card>
+      <md-card-content>
+        <div layout="row">
+          <h2 layout-align="start center" class="md-title">Scheduled jobs</h2>
+          <!--<div flex></div>
+          <md-switch layout-align="end center" ng-model="scheduleActive" ng-change="toggleSchedule()" aria-label="Schedule"></h2>-->
+        </div>
+        <md-list>
+          <md-list-item class="md-2-line" ng-repeat="job in jobCurr | orderBy:'timeHr'">
+            <div class="md-list-item-text" style="padding-left: 20px;">
+              <h3>{{ job.jobName }}</h3>
+              <p class="capitalize">at {{ job.timeHr }}</p>
+            </div>
+          </md-list-item>
+        </md-list>
+      </md-card-content>
+    </md-card>
+  </md-content>
+</div>

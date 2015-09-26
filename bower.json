@@ -1,0 +1,42 @@
+{
+  "name": "autobot",
+  "version": "0.1.0",
+  "description": "Home Automation Software based on Node.js, Express.js and Angular.js. Uses Arduino with 433Mhz transmitter to control KAKUK/COCO switches.",
+  "main": "./bin/www",
+  "moduleType": [
+    "node"
+  ],
+  "keywords": [
+    "home",
+    "automation",
+    "arduino",
+    "433",
+    "mhz",
+    "kaku",
+    "coco"
+  ],
+  "authors": [
+    "Thijs Dortmann"
+  ],
+  "license": "MIT",
+  "homepage": "http://autobot.thijsdortmann.nl",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-bootstrap": "~0.13.0",
+    "angular-material": "~0.10.0",
+    "angular-google-maps": "~2.1.5",
+    "angular-route": "~1.4.3",
+    "angular-resource": "~1.4.3",
+    "angular-messages": "~1.4.3",
+    "bootstrap": "~3.3.5",
+    "angular-ui-router": "~0.2.15",
+    "components-font-awesome": "~4.3.0"
+  }
+}

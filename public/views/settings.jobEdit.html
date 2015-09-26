@@ -1,0 +1,75 @@
+<div layout="row" layout-sm="column">
+  <md-content flex="100">
+    <md-card>
+      <md-card-content>
+        <form name="jobForm">
+          <div layout="row" layout-sm="column">
+            <div flex="50" flex-sm="100">
+              <fieldset class="standard" flex>
+                <legend>Job parameters</legend>
+                <md-select placeholder="Unit" ng-model="job.unitId" style="width: 100%">
+                  <md-option ng-repeat="unit in units" value="{{ unit.unitId }}">{{ unit.unitName }}</md-option>
+                </md-select>
+                <legend>Switch unit to:</legend>
+                <md-radio-group ng-model="job.newState">
+                  <md-radio-button value="1">Turn on</md-radio-button>
+                  <md-radio-button value="0">Turn off</md-radio-button>
+                </md-radio-group>
+                <legend>Repeat job:</legend>
+                <md-radio-group ng-model="job.repeat">
+                  <md-radio-button value="daily">Repeat daily</md-radio-button>
+                  <md-radio-button value="weekly">Repeat weekly</md-radio-button>
+                </md-radio-group>
+                <md-select placeholder="Weekday" ng-model="job.weekday" style="width: 100%" ng-show="job.repeat == 'weekly'">
+                  <md-option value="1">Monday</md-option>
+                  <md-option value="2">Tuesday</md-option>
+                  <md-option value="3">Wednesday</md-option>
+                  <md-option value="4">Thursday</md-option>
+                  <md-option value="5">Friday</md-option>
+                  <md-option value="6">Saturday</md-option>
+                  <md-option value="0">Sunday</md-option>
+                </md-select>
+              </fieldset>
+            </div>
+            <div flex="50" flex-sm="100">
+              <fieldset class="standard" flex>
+                <legend>Time at which job is executed</legend>
+                <md-input-container>
+                  <input ng-model="job.hour" name="hour" type="number" placeholder="Hour" ng-required="false" min="0" max="23">
+                  <div ng-messages="jobForm.hour.$error">
+                    <div ng-message="min">A negative time is not allowed.</div>
+                    <div ng-message="max">Sorry, but there are only 24 hours in a day.</div>
+                  </div>
+                </md-input-container>
+                <md-input-container>
+                  <input ng-model="job.min" name="min" type="number" placeholder="Minute" ng-required="false" min="0" max="59">
+                  <div ng-messages="jobForm.min.$error">
+                    <div ng-message="min">A negative time is not allowed.</div>
+                    <div ng-message="max">Sorry, but there are only 60 minutes in an hour.</div>
+                  </div>
+                </md-input-container>
+                <md-input-container>
+                  <input ng-model="job.sec" name="sec" type="number" placeholder="Second" ng-required="false" min="0" max="59">
+                  <div ng-messages="jobForm.sec.$error">
+                    <div ng-message="min">A negative time is not allowed.</div>
+                    <div ng-message="max">Sorry, but there are only 60 seconds in a minute.</div>
+                  </div>
+                </md-input-container>
+                <md-checkbox ng-model="job.useSunrise" aria-label="Use sunrise">
+                  Use sunrise as time (overrides time set above)
+                </md-checkbox>
+                <md-checkbox ng-model="job.useSunset" aria-label="Use sunset">
+                  Use sunset as time (overrides time set above)
+                </md-checkbox>
+              </fieldset>
+            </div>
+          </div>
+        </form>
+      </md-card-content>
+      <div class="md-actions" layout="row" layout-align="end center">
+        <md-button ng-click="changeView('settings')">Cancel</md-button>
+        <md-button class="md-primary" ng-click="saveJob()">Save</md-button>
+      </div>
+    </md-card>
+  </md-content>
+</div>

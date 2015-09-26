@@ -1,0 +1,58 @@
+<style type="text/css">
+  .angular-google-map-container {
+    height: 400px;
+  }
+</style>
+
+<div layout="row" layout-sm="column">
+  <md-content class="md-padding" flex="66" flex-sm="100">
+    <md-card>
+      <!--<img ng-src="{{imagePath}}" class="md-card-image" alt="Washed Out">-->
+      <md-card-content>
+        <h2 class="md-title">Schedule</h2>
+        <md-list>
+          <md-list-item class="md-2-line" ng-repeat="job in jobs" ng-click="editJob(job)">
+            <h2><i ng-class="job.icon"></i></h2>
+            <div class="md-list-item-text" style="padding-left: 20px;">
+              <h3>{{ job.jobName }}</h3>
+              <p>{{ job.description }}</p>
+            </div>
+            <md-icon class="md-secondary" aria-label="Delete job" ng-click="deleteJob(job)">
+              <i class="fa fa-trash-o"></i>
+            </md-icon>
+          </md-list-item>
+        </md-list >
+      </md-card-content>
+        <div class="md-actions" layout="row" layout-align="end center">
+          <md-button ng-click="rebuildSchedule()">Rebuild schedule</md-button>
+          <md-button ng-click="changeView('settings/jobAdd')">Add job</md-button>
+        </div>
+    </md-card>
+  </md-content>
+  <md-content class="md-padding" flex="33" flex-sm="100">
+    <md-card>
+      <!--<img ng-src="{{imagePath}}" class="md-card-image" alt="Washed Out">-->
+      <ui-gmap-google-map center='map.center' zoom='map.zoom' draggable='false'>
+        <ui-gmap-marker idKey='marker.id' coords='marker.coords' options='marker.options'></ui-gmap-marker>
+      </ui-gmap-google-map>
+      <md-card-content>
+        <h2 class="md-title">Sunrise and sunset</h2>
+        <h3>Today:</h3>
+        <p>
+          <p>Sunrise: {{ sunrise }}</p>
+          <p>Sunset: {{ sunset }}</p>
+        </p>
+      </md-card-content>
+      <div class="md-actions" layout="row" layout-align="end center">
+        <md-button ng-click="changeLocation()">Change location</md-button>
+      </div>
+    </md-card>
+  </md-content>
+</div>
+
+<div ng-if="alert">
+  <br/>
+  <b layout="row" layout-align="center center" class="md-padding">
+      {{alert}}
+    </b>
+</div>
