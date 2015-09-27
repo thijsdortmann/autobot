@@ -12,13 +12,22 @@ Tried and tested with Mac OS X 10.10, Windows 10 and Ubuntu with Arduino Uno. Do
 
 #### Software
 * Grab the [NewRemoteSwitch library](https://bitbucket.org/fuzzillogic/433mhzforarduino/wiki/Home) and [install it](https://www.arduino.cc/en/Guide/Libraries).
-* Open the autobot_Arduino sketch from the arduino folder.
+* Open the `autobot_Arduino` sketch from the `arduino` folder.
 * Upload it to the Arduino.
 
 Connect the Arduino to the machine that will run AutoBot. Use Arduino software to find serial port that the Arduino is connected to. This will be needed during configuration of AutoBot later on.
 
 ### Database
-AutoBot uses a standard MySQL database. Create a MySQL database and user for AutoBot, and import the provided SQL dump.
+AutoBot uses a standard MySQL database. Adding units has to be done by hand in the current version, but will be possible from the GUI in a later version.
+
+* Create a MySQL database and user for AutoBot.
+* Import `autobot.sql`.
+* Add rows to table `unit` to add units to AutoBot.
+  * `unitId`: ID of unit. Leave empty, since this  column will auto increment.
+  * `kakuId`: ID of KAKU/COCO switch within address
+  * `unitState`: Current state of switch. `0` means off, `1` means on.
+  * `unitName`: Name of the unit as shown in AutoBot.
+  * `unitDescr`: Description of unit, as shown in AutoBot.
 
 ### Basic Installation
 * Download project from GitHub.
