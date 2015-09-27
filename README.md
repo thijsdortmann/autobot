@@ -1,6 +1,8 @@
 # AutoBot
 Fully responsive, web technology-based Home Automation Software developed using Node.js, Express.js and Angular.js with Angular Material. Uses Arduino with generic el-cheapo transmitter to send commands to KAKU/COCO 433 Mhz switches. Can schedule based on sunrise and sunset.
 
+This project started as a personal learning project for Node.js and Angular.js. Large parts of the software will be rewritten in the future.
+
 ## Compatibility
 Tried and tested with Mac OS X 10.10, Windows 10 and Ubuntu with Arduino Uno. Does (currently) not work on Synology, because of issues with the serial library.
 
