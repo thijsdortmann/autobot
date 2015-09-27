@@ -1,13 +1,21 @@
 # AutoBot
-Home Automation Software bosed on Node.js, Express.js and Angular.js. Uses Arduino with generic el-cheapo transmitter to send commands to KAKU/COCO 433 Mhz switches.
+Fully responsive, web technology-based Home Automation Software developed using Node.js, Express.js and Angular.js with Angular Material. Uses Arduino with generic el-cheapo transmitter to send commands to KAKU/COCO 433 Mhz switches. Can schedule based on sunrise and sunset.
 
 ## Compatibility
-Tried and tested with Mac OS X 10.10, Windows 10 and Ubuntu. Does (currently) not work on Synology, because of issues with the serial library.
+Tried and tested with Mac OS X 10.10, Windows 10 and Ubuntu with Arduino Uno. Does (currently) not work on Synology, because of issues with the serial library.
 
 ## Installation
 
 ### Arduino
-Arduino source code and installation instructions will be provided soon.
+#### Hardware
+* Connect [a generic, three-pin 433Mhz transmitter](http://www.hobbyelectronica.nl/product/433mhz-rf-ontvanger-zender-set/) to power (5V and GND) and data (PIN 11).
+
+#### Software
+* Grab the [NewRemoteSwitch library](https://bitbucket.org/fuzzillogic/433mhzforarduino/wiki/Home) and [install it](https://www.arduino.cc/en/Guide/Libraries).
+* Open the autobot_Arduino sketch from the arduino folder.
+* Upload it to the Arduino.
+
+Connect the Arduino to the machine that will run AutoBot. Use Arduino software to find serial port that the Arduino is connected to. This will be needed during configuration of AutoBot later on.
 
 ### Database
 AutoBot uses a standard MySQL database. Create a MySQL database and user for AutoBot, and import the provided SQL dump.
