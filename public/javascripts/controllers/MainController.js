@@ -17,7 +17,7 @@ app.controller("MainController", ["$scope", "$http", "units", "unit", function($
 
         for(var i=0; i<$scope.jobCurr.length; i++) {
           $scope.jobCurr[i].jobName = ($scope.jobCurr[i].newState == 1 ? 'Turn on ' : 'Turn off ')+$scope.jobCurr[i].unitName;
-          $scope.jobCurr[i].timeHr = doubleDigit($scope.jobCurr[i].hour)+":"+doubleDigit($scope.jobCurr[i].min)+":"+doubleDigit($scope.jobCurr[i].sec);
+          $scope.jobCurr[i].timeHr = doubleDigit($scope.jobCurr[i].hour)+":"+doubleDigit($scope.jobCurr[i].min);
         }
 
         console.log($scope.jobCurr);
