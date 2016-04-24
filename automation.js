@@ -15,6 +15,8 @@ var job_makeSchedule = crontab.scheduleJob('0 55 16 * * *', function() {
 });
 
 makeSchedule();
+setTimeout(runSchedule, 5000);
+setInterval(runSchedule, 60000);
 
 module.exports.makeSchedule = function() {
   makeSchedule();
@@ -35,8 +37,8 @@ function makeSchedule() {
     var tempDateSunrise = new Date(response.results.sunrise);
     var tempDateSunset = new Date(response.results.sunset);
 
-    var sunriseToday = tempDateSunrise.toLocaleTimeString();
-    var sunsetToday = tempDateSunset.toLocaleTimeString();
+    var sunriseToday = tempDateSunrise.toLocaleTimeString("nl-NL" ,{hour12 : false});
+    var sunsetToday = tempDateSunset.toLocaleTimeString("nl-NL" ,{hour12 : false});
 
     console.log("Sunrise:\t" + sunriseToday + "\nSunset:\t\t" + sunsetToday);
 
@@ -49,9 +51,7 @@ function makeSchedule() {
         console.error(err);
       } else {
 
-        Job_stopAndClearAll();
-
-        //console.log(rows);
+        jobs_descr = [];
 
         for (var i = 0; i < rows.length; i++) {
           var weekday;
@@ -65,7 +65,7 @@ function makeSchedule() {
 
           // Generate hour, minute and second for job.
           if (rows[i].useSunset) {
-            console.log(sunsetTodayArray[1])
+            //console.log(sunsetTodayArray[1])
             hour = parseInt(sunsetTodayArray[1])+parseInt(rows[i].hour);
             min = parseInt(sunsetTodayArray[2])+parseInt(rows[i].min);
             sec = parseInt(sunsetTodayArray[3])+parseInt(rows[i].sec);
@@ -79,51 +79,51 @@ function makeSchedule() {
             sec = rows[i].sec;
           }
 
-          var weekday = rows[i].isWeekly ? rows[i].weekday : "*";
-
-          /*
-          1    2    3    4    5    6
-          *    *    *    *    *    *
-          ┬    ┬    ┬    ┬    ┬    ┬
-          │    │    │    │    │    |
-          │    │    │    │    │    └ day of week (0 - 7) (0 or 7 is Sun)
-          │    │    │    │    └───── month (1 - 12)
-          │    │    │    └────────── day of month (1 - 31)
-          │    │    └─────────────── hour (0 - 23)
-          │    └──────────────────── minute (0 - 59)
-          └───────────────────────── second (0 - 59, OPTIONAL)
-          */
-
-          //console.log(sec+' '+min+' '+hour+' * * '+weekday);
-
-          jobs.push(crontab.scheduleJob(sec + ' ' + min + ' ' + hour + ' * * ' + weekday, function(_unitId, _newState, _unitName) {
-            Job_changeState(_unitId, _newState, _unitName);
-          }, [unitId, newState, unitName]));
-
-          /*jobs.push(new CronJob(sec + ' ' + min + ' ' + hour + ' * * ' + weekday, function(unitId, newState, unitName) {
-            console.log("Cron unitId: "+unitId);
-            Job_changeState(unitId, newState, unitName);
-          }, null, true));*/
-
-          //                          1      2       3      4 5   6
-          //Jobs.push(cron.scheduleJob(sec+' '+min+' '+hour+' * * '+weekday, Job_changeState(kakuId, newState, unitName)));
-
-          console.log("-------------------\nScheduled new job:\nWeekday: " + weekday + "\nHour: " + hour + "\nMinute: " + min + "\nSecond: " + sec + "\nUnit name: "+unitName+"\nUnit ID: " + unitId + "\nNew state: " + newState + "\n-------------------");
+          weekday = rows[i].isWeekly ? rows[i].weekday : -1;
 
           jobs_descr.push({
             hour: hour,
             min: min,
-            sec: sec,
             weekday: weekday,
             unitId: unitId,
             unitName: unitName,
             newState: newState
           });
 
+          console.log("-------------------\nScheduled new job:\nWeekday: " + weekday + "\nHour: " + hour + "\nMinute: " + min + "\nUnit name: "+unitName+"\nUnit ID: " + unitId + "\nNew state: " + newState + "\n-------------------");
+
         }
       }
     });
   });
+}
+
+function runSchedule() {
+  console.log("JOB: Running schedule...");
+
+  var jobs_runnow = [];
+  var date = new Date();
+
+  var current_weekday = date.getDay();
+  var current_hour = date.getHours();
+  var current_minute = date.getMinutes();
+
+  for(var i = 0; i<jobs_descr.length; i++) {
+    if((jobs_descr[i].weekday == '-1' || jobs_descr[i].weekday == current_weekday) && jobs_descr[i].hour == current_hour && jobs_descr[i].min == current_minute) {
+      jobs_runnow.push(jobs_descr[i]);
+      console.log("JOB: Queuing job " + i);
+    }
+  }
+
+  function doNext() {
+    if(jobs_runnow.length > 0) {
+      var todo = jobs_runnow.shift();
+      Job_changeState(todo.unitId, todo.newState, todo.unitName);
+      setTimeout(doNext, 1500);
+    }
+  }
+
+  doNext();
 }
 
 function Job_changeState(_unitId, _newState, _unitName) {
@@ -140,14 +140,4 @@ function Job_changeState(_unitId, _newState, _unitName) {
   unitState.changeState(unitId, newState);
   console.log("JOB: State changed for unit "+unitId+" ("+unitName+").");
   pusher.sendNotification("AUTOBOT: " + unitName + " " + (newState ? "turned on." : "turned off."), "Unit with Kaku ID " + unitId + " changed it's state to " + newState + ".");
-}
-
-function Job_stopAndClearAll() {
-  for (var i = 0; i < jobs.length; i++) {
-    crontab.cancelJob(jobs[i]);
-    console.log("Stopped job "+i+".");
-  }
-  jobs = [];
-  jobs_descr = [];
-  console.log("Cleared job array.");
 }
